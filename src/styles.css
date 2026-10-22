@@ -1,0 +1,6 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+
+/* Dark mode is turned on by the "dark" class on <html>, not by the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
