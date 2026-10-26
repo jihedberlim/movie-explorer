@@ -1,0 +1,9 @@
+<span
+  class="shrink-0 rounded px-1.5 py-0.5 text-xs font-bold text-white"
+  [class.bg-green-600]="level() === 'high'"
+  [class.bg-yellow-500]="level() === 'medium'"
+  [class.bg-red-600]="level() === 'low'"
+  [class.bg-gray-500]="level() === 'none'"
+>
+  {{ label() }}
+</span>

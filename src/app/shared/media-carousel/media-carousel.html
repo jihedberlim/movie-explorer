@@ -1,0 +1,12 @@
+<section class="mb-8">
+  <h2 class="mb-3 text-xl font-bold">{{ title() }}</h2>
+
+  <!-- A horizontal row that scrolls sideways; "snap" makes it stop neatly on a card -->
+  <div class="flex snap-x gap-4 overflow-x-auto pb-2">
+    @for (item of items(); track item.id) {
+      <div class="w-36 shrink-0 snap-start sm:w-40">
+        <app-movie-card [item]="item" />
+      </div>
+    }
+  </div>
+</section>
