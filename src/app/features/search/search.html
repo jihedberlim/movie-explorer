@@ -1,1 +1,24 @@
-<p>search works!</p>
+<input
+  type="search"
+  [formControl]="queryControl"
+  placeholder="Search movies and TV shows..."
+  aria-label="Search movies and TV shows"
+  class="mb-6 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-blue-500 dark:border-gray-700 dark:bg-gray-900"
+/>
+
+<!-- 2 columns on phones, up to 6 on large screens -->
+<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+  @for (item of results(); track item.media_type + '-' + item.id) {
+    <app-movie-card [item]="item" />
+  }
+</div>
+
+@if (loading()) {
+  <p class="py-6 text-center text-gray-500">Loading...</p>
+}
+
+<!-- Invisible line at the end of the grid. It is removed while loading and
+     added back after, so the sensor checks again if it is still on screen. -->
+@if (hasMore() && !loading()) {
+  <div appInfiniteScroll (scrolled)="loadMore()" class="h-1"></div>
+}
