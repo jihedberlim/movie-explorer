@@ -1,5 +1,12 @@
 import { MediaItem } from '../models/media.model';
-import { getMediaType, getRatingLevel, getTitle, getYear, onlyMoviesAndTv } from './media.utils';
+import {
+  appendUnique,
+  getMediaType,
+  getRatingLevel,
+  getTitle,
+  getYear,
+  onlyMoviesAndTv,
+} from './media.utils';
 
 // Builds a fake item with only the fields each test cares about
 function createItem(fields: Partial<MediaItem>): MediaItem {
@@ -65,6 +72,29 @@ describe('media utils', () => {
       const person = createItem({ id: 3, media_type: 'person' });
 
       expect(onlyMoviesAndTv([movie, person, show])).toEqual([movie, show]);
+    });
+  });
+
+  describe('appendUnique', () => {
+    it('should add the new items at the end, keeping the order', () => {
+      const dune = createItem({ id: 1, title: 'Dune' });
+      const alien = createItem({ id: 2, title: 'Alien' });
+
+      expect(appendUnique([dune], [alien])).toEqual([dune, alien]);
+    });
+
+    it('should skip items that are already in the list', () => {
+      const dune = createItem({ id: 1, title: 'Dune' });
+      const alien = createItem({ id: 2, title: 'Alien' });
+
+      expect(appendUnique([dune, alien], [alien])).toEqual([dune, alien]);
+    });
+
+    it('should keep a movie and a TV show that share the same id', () => {
+      const movie = createItem({ id: 1, media_type: 'movie' });
+      const show = createItem({ id: 1, media_type: 'tv' });
+
+      expect(appendUnique([movie], [show])).toEqual([movie, show]);
     });
   });
 

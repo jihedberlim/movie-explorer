@@ -27,6 +27,15 @@ export function onlyMoviesAndTv(items: MediaItem[]): MediaItem[] {
   return items.filter((item) => item.media_type !== 'person');
 }
 
+// Adds the next page to the current list, skipping titles that are already there.
+// TMDB sometimes repeats a title on two pages. A movie and a TV show can share the
+// same id, so the type is part of the check.
+export function appendUnique(current: MediaItem[], next: MediaItem[]): MediaItem[] {
+  const keys = new Set(current.map((item) => `${getMediaType(item)}-${item.id}`));
+  const newItems = next.filter((item) => !keys.has(`${getMediaType(item)}-${item.id}`));
+  return [...current, ...newItems];
+}
+
 // A rating of 0 means nobody voted yet (common for upcoming movies)
 export function getRatingLevel(rating: number): RatingLevel {
   if (rating === 0) {
