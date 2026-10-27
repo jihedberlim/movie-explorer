@@ -18,11 +18,13 @@ export const routes: Routes = [
   },
   {
     path: 'movie/:id',
+    data: { type: 'movie' },
     title: 'Details | Movie Explorer',
     loadComponent: () => import('./features/details/details').then((m) => m.Details),
   },
   {
     path: 'tv/:id',
+    data: { type: 'tv' },
     title: 'Details | Movie Explorer',
     loadComponent: () => import('./features/details/details').then((m) => m.Details),
   },
