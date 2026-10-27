@@ -1,8 +1,10 @@
-import { MediaItem } from '../models/media.model';
+import { MediaDetails, MediaItem, Video } from '../models/media.model';
 import {
   appendUnique,
+  findTrailer,
   getMediaType,
   getRatingLevel,
+  getRuntime,
   getTitle,
   getYear,
   onlyMoviesAndTv,
@@ -95,6 +97,59 @@ describe('media utils', () => {
       const show = createItem({ id: 1, media_type: 'tv' });
 
       expect(appendUnique([movie], [show])).toEqual([movie, show]);
+    });
+  });
+
+  describe('getRuntime', () => {
+    function createDetails(fields: Partial<MediaDetails>): MediaDetails {
+      return {
+        ...createItem({}),
+        genres: [],
+        credits: { cast: [] },
+        videos: { results: [] },
+        similar: { page: 1, results: [], total_pages: 0, total_results: 0 },
+        ...fields,
+      };
+    }
+
+    it('should use the runtime of a movie', () => {
+      expect(getRuntime(createDetails({ runtime: 169 }))).toBe(169);
+    });
+
+    it('should use the episode length of a TV show', () => {
+      expect(getRuntime(createDetails({ episode_run_time: [47, 50] }))).toBe(47);
+    });
+
+    it('should return null when the runtime is unknown', () => {
+      expect(getRuntime(createDetails({ runtime: 0 }))).toBeNull();
+      expect(getRuntime(createDetails({ episode_run_time: [] }))).toBeNull();
+    });
+  });
+
+  describe('findTrailer', () => {
+    function createVideo(key: string, type: string, site = 'YouTube'): Video {
+      return { key, name: key, type, site };
+    }
+
+    it('should pick the first YouTube trailer', () => {
+      const videos = [
+        createVideo('clip', 'Clip'),
+        createVideo('vimeo-trailer', 'Trailer', 'Vimeo'),
+        createVideo('trailer', 'Trailer'),
+      ];
+
+      expect(findTrailer(videos)?.key).toBe('trailer');
+    });
+
+    it('should pick a teaser when there is no trailer', () => {
+      const videos = [createVideo('clip', 'Clip'), createVideo('teaser', 'Teaser')];
+
+      expect(findTrailer(videos)?.key).toBe('teaser');
+    });
+
+    it('should return null when there is no trailer or teaser', () => {
+      expect(findTrailer([createVideo('clip', 'Clip')])).toBeNull();
+      expect(findTrailer([])).toBeNull();
     });
   });
 

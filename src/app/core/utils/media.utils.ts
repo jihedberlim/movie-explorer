@@ -1,4 +1,4 @@
-import { MediaItem, MediaType } from '../models/media.model';
+import { MediaDetails, MediaItem, MediaType, Video } from '../models/media.model';
 
 export type RatingLevel = 'high' | 'medium' | 'low' | 'none';
 
@@ -34,6 +34,23 @@ export function appendUnique(current: MediaItem[], next: MediaItem[]): MediaItem
   const keys = new Set(current.map((item) => `${getMediaType(item)}-${item.id}`));
   const newItems = next.filter((item) => !keys.has(`${getMediaType(item)}-${item.id}`));
   return [...current, ...newItems];
+}
+
+// Movies have "runtime"; TV shows have "episode_run_time" (minutes of one episode).
+// TMDB sends 0 or an empty list when it doesn't know.
+export function getRuntime(details: MediaDetails): number | null {
+  return details.runtime || details.episode_run_time?.[0] || null;
+}
+
+// TMDB sends many videos (trailers, clips, behind the scenes...).
+// We want a YouTube trailer, or a teaser when there is no trailer.
+export function findTrailer(videos: Video[]): Video | null {
+  const youtubeVideos = videos.filter((video) => video.site === 'YouTube');
+  return (
+    youtubeVideos.find((video) => video.type === 'Trailer') ??
+    youtubeVideos.find((video) => video.type === 'Teaser') ??
+    null
+  );
 }
 
 // A rating of 0 means nobody voted yet (common for upcoming movies)
