@@ -38,7 +38,11 @@ export class TmdbService {
   // One request brings the details plus cast, videos and similar titles
   getDetails(type: MediaType, id: number): Observable<MediaDetails> {
     return this.http.get<MediaDetails>(`${this.apiUrl}/${type}/${id}`, {
-      params: { append_to_response: 'credits,videos,similar' },
+      params: {
+        append_to_response: 'credits,videos,similar',
+        // Videos in Portuguese first, English as a backup (many titles have no Portuguese trailer)
+        include_video_language: 'pt,en',
+      },
     });
   }
 
@@ -49,10 +53,21 @@ export class TmdbService {
   }
 
   discover(filters: DiscoverFilters): Observable<PagedResponse<MediaItem>> {
-    const params: Record<string, string | number> = {
-      page: filters.page ?? 1,
-      sort_by: filters.sortBy ?? 'popularity.desc',
-    };
+    const params: Record<string, string | number> = { page: filters.page ?? 1 };
+
+    // Turns our friendly sort options into TMDB params
+    if (filters.sortBy === 'top_rated') {
+      params['sort_by'] = 'vote_average.desc';
+      // Without a minimum, a title with a single 10/10 vote would be first
+      params['vote_count.gte'] = 200;
+    } else if (filters.sortBy === 'newest') {
+      params['sort_by'] =
+        filters.type === 'movie' ? 'primary_release_date.desc' : 'first_air_date.desc';
+      // A few votes means it was already released (skips announced titles)
+      params['vote_count.gte'] = 10;
+    } else {
+      params['sort_by'] = 'popularity.desc';
+    }
 
     // Only send the filters the user actually picked
     if (filters.genreId) {

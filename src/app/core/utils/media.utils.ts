@@ -1,4 +1,11 @@
-import { MediaDetails, MediaItem, MediaType, Video } from '../models/media.model';
+import {
+  DiscoverFilters,
+  DiscoverSort,
+  MediaDetails,
+  MediaItem,
+  MediaType,
+  Video,
+} from '../models/media.model';
 
 export type RatingLevel = 'high' | 'medium' | 'low' | 'none';
 
@@ -65,4 +72,33 @@ export function getRatingLevel(rating: number): RatingLevel {
     return 'medium';
   }
   return 'low';
+}
+
+export const DISCOVER_SORTS: DiscoverSort[] = ['popular', 'top_rated', 'newest'];
+
+// The Discover filters as they come from the URL: always text, and maybe missing
+export interface DiscoverQueryParams {
+  type?: string;
+  genre?: string;
+  year?: string;
+  sort?: string;
+}
+
+// Anyone can type anything in the URL (e.g. ?year=banana), so we only keep valid values
+// and use the defaults for the rest
+export function parseDiscoverFilters(params: DiscoverQueryParams): DiscoverFilters {
+  const type: MediaType = params.type === 'tv' ? 'tv' : 'movie';
+
+  const genreId = Number(params.genre);
+  const year = Number(params.year);
+  const isValidYear = Number.isInteger(year) && year >= 1900 && year <= 2100;
+
+  const sortBy = DISCOVER_SORTS.find((sort) => sort === params.sort) ?? 'popular';
+
+  return {
+    type,
+    genreId: Number.isInteger(genreId) && genreId > 0 ? genreId : undefined,
+    year: isValidYear ? year : undefined,
+    sortBy,
+  };
 }

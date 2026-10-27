@@ -1,0 +1,7 @@
+/* Lets this file use Tailwind classes (and our "dark" setting) with @apply */
+@reference '../../../styles.css';
+
+/* The same look for the 4 filter boxes, written once */
+.filter-select {
+  @apply rounded-lg border border-gray-300 bg-white px-3 py-2 dark:border-gray-700 dark:bg-gray-900;
+}

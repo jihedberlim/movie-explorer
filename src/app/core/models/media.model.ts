@@ -58,11 +58,13 @@ export interface MediaDetails extends MediaItem {
   similar: PagedResponse<MediaItem>;
 }
 
+export type DiscoverSort = 'popular' | 'top_rated' | 'newest';
+
 // Filters used by the Discover page
 export interface DiscoverFilters {
   type: MediaType;
   genreId?: number;
   year?: number;
-  sortBy?: string;
+  sortBy?: DiscoverSort;
   page?: number;
 }

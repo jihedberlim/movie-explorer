@@ -8,6 +8,7 @@ import {
   getTitle,
   getYear,
   onlyMoviesAndTv,
+  parseDiscoverFilters,
 } from './media.utils';
 
 // Builds a fake item with only the fields each test cares about
@@ -170,6 +171,49 @@ describe('media utils', () => {
 
     it('should be "none" when nobody voted yet', () => {
       expect(getRatingLevel(0)).toBe('none');
+    });
+  });
+
+  describe('parseDiscoverFilters', () => {
+    it('should use the defaults when the URL has no filters', () => {
+      expect(parseDiscoverFilters({})).toEqual({
+        type: 'movie',
+        genreId: undefined,
+        year: undefined,
+        sortBy: 'popular',
+      });
+    });
+
+    it('should read valid filters from the URL', () => {
+      const filters = parseDiscoverFilters({
+        type: 'tv',
+        genre: '18',
+        year: '2008',
+        sort: 'top_rated',
+      });
+
+      expect(filters).toEqual({ type: 'tv', genreId: 18, year: 2008, sortBy: 'top_rated' });
+    });
+
+    it('should ignore invalid values typed in the URL', () => {
+      const filters = parseDiscoverFilters({
+        type: 'cartoon',
+        genre: 'abc',
+        year: 'banana',
+        sort: 'random',
+      });
+
+      expect(filters).toEqual({
+        type: 'movie',
+        genreId: undefined,
+        year: undefined,
+        sortBy: 'popular',
+      });
+    });
+
+    it('should ignore years that make no sense', () => {
+      expect(parseDiscoverFilters({ year: '1500' }).year).toBeUndefined();
+      expect(parseDiscoverFilters({ year: '2014.5' }).year).toBeUndefined();
     });
   });
 });

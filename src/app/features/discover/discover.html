@@ -1,1 +1,55 @@
-<p>discover works!</p>
+<div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+  <label class="flex flex-col gap-1 text-sm">
+    <span class="font-semibold">Type</span>
+    <select #typeSelect (change)="setType(typeSelect.value)" class="filter-select">
+      <option value="movie" [selected]="filters().type === 'movie'">Movies</option>
+      <option value="tv" [selected]="filters().type === 'tv'">TV shows</option>
+    </select>
+  </label>
+
+  <label class="flex flex-col gap-1 text-sm">
+    <span class="font-semibold">Genre</span>
+    <select #genreSelect (change)="setGenre(genreSelect.value)" class="filter-select">
+      <option value="">All genres</option>
+      @for (genre of genres.value() ?? []; track genre.id) {
+        <option [value]="genre.id" [selected]="filters().genreId === genre.id">
+          {{ genre.name }}
+        </option>
+      }
+    </select>
+  </label>
+
+  <label class="flex flex-col gap-1 text-sm">
+    <span class="font-semibold">Year</span>
+    <select #yearSelect (change)="setYear(yearSelect.value)" class="filter-select">
+      <option value="">Any year</option>
+      @for (year of years; track year) {
+        <option [value]="year" [selected]="filters().year === year">{{ year }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="flex flex-col gap-1 text-sm">
+    <span class="font-semibold">Sort by</span>
+    <select #sortSelect (change)="setSort(sortSelect.value)" class="filter-select">
+      <option value="popular" [selected]="filters().sortBy === 'popular'">Most popular</option>
+      <option value="top_rated" [selected]="filters().sortBy === 'top_rated'">Top rated</option>
+      <option value="newest" [selected]="filters().sortBy === 'newest'">Newest</option>
+    </select>
+  </label>
+</div>
+
+<!-- 2 columns on phones, up to 6 on large screens -->
+<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+  @for (item of results(); track item.id) {
+    <app-movie-card [item]="item" />
+  }
+</div>
+
+@if (loading()) {
+  <p class="py-6 text-center text-gray-500">Loading...</p>
+}
+
+@if (hasMore() && !loading()) {
+  <div appInfiniteScroll (scrolled)="loadMore()" class="h-1"></div>
+}

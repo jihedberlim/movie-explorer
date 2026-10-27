@@ -61,6 +61,7 @@ describe('TmdbService', () => {
 
     const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/tv/1396`);
     expect(req.request.params.get('append_to_response')).toBe('credits,videos,similar');
+    expect(req.request.params.get('include_video_language')).toBe('pt,en');
   });
 
   it('should return only the genres array', () => {
@@ -98,6 +99,28 @@ describe('TmdbService', () => {
     const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/discover/movie`);
     expect(req.request.params.has('with_genres')).toBe(false);
     expect(req.request.params.has('primary_release_year')).toBe(false);
+  });
+
+  it('should sort top rated titles by rating, ignoring titles with few votes', () => {
+    service.discover({ type: 'movie', sortBy: 'top_rated' }).subscribe();
+
+    const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/discover/movie`);
+    expect(req.request.params.get('sort_by')).toBe('vote_average.desc');
+    expect(req.request.params.get('vote_count.gte')).toBe('200');
+  });
+
+  it('should sort the newest movies by release date', () => {
+    service.discover({ type: 'movie', sortBy: 'newest' }).subscribe();
+
+    const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/discover/movie`);
+    expect(req.request.params.get('sort_by')).toBe('primary_release_date.desc');
+  });
+
+  it('should sort the newest TV shows by first air date', () => {
+    service.discover({ type: 'tv', sortBy: 'newest' }).subscribe();
+
+    const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/discover/tv`);
+    expect(req.request.params.get('sort_by')).toBe('first_air_date.desc');
   });
 
   it('should build the full image url', () => {
