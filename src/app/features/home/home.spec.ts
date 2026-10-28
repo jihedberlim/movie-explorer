@@ -53,6 +53,22 @@ describe('Home', () => {
     expect(element.textContent).toContain('Avatar');
   });
 
+  it('should feature the first trending title with an image in the hero', async () => {
+    httpTesting.expectOne(`${apiUrl}/trending/all/week`).flush(
+      createPage([
+        { title: 'No Image', media_type: 'movie', overview: 'Plot' },
+        { title: 'Dune', media_type: 'movie', overview: 'Plot', backdrop_path: '/dune.jpg' },
+      ]),
+    );
+    httpTesting.expectOne(`${apiUrl}/movie/top_rated`).flush(createPage([]));
+    httpTesting.expectOne(`${apiUrl}/movie/upcoming`).flush(createPage([]));
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('h1')?.textContent).toContain('Dune');
+    expect(element.querySelector('section a')?.getAttribute('href')).toBe('/movie/2');
+  });
+
   it('should not show people in the trending carousel', async () => {
     httpTesting.expectOne(`${apiUrl}/trending/all/week`).flush(
       createPage([

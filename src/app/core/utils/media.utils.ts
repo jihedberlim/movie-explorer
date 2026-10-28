@@ -69,6 +69,12 @@ export function getRatingLevel(rating: number): RatingLevel {
   return 'low';
 }
 
+// The hero needs a wide image and a synopsis to look good, and not every title has both
+// (many overviews are empty in pt-BR)
+export function pickHeroItem(items: MediaItem[]): MediaItem | null {
+  return items.find((item) => item.backdrop_path && item.overview) ?? null;
+}
+
 export const DISCOVER_SORTS: DiscoverSort[] = ['popular', 'top_rated', 'newest'];
 
 export interface DiscoverQueryParams {

@@ -9,6 +9,7 @@ import {
   getYear,
   onlyMoviesAndTv,
   parseDiscoverFilters,
+  pickHeroItem,
 } from './media.utils';
 
 function createItem(fields: Partial<MediaItem>): MediaItem {
@@ -170,6 +171,23 @@ describe('media utils', () => {
 
     it('should be "none" when nobody voted yet', () => {
       expect(getRatingLevel(0)).toBe('none');
+    });
+  });
+
+  describe('pickHeroItem', () => {
+    it('should pick the first title with a backdrop and an overview', () => {
+      const items = [
+        createItem({ id: 1, backdrop_path: null, overview: 'No image' }),
+        createItem({ id: 2, backdrop_path: '/b.jpg', overview: '' }),
+        createItem({ id: 3, backdrop_path: '/c.jpg', overview: 'Ready' }),
+        createItem({ id: 4, backdrop_path: '/d.jpg', overview: 'Also ready' }),
+      ];
+      expect(pickHeroItem(items)?.id).toBe(3);
+    });
+
+    it('should return null when no title can be used', () => {
+      expect(pickHeroItem([createItem({ overview: 'No image' })])).toBeNull();
+      expect(pickHeroItem([])).toBeNull();
     });
   });
 

@@ -53,7 +53,7 @@
             (click)="toggleWatchlist()"
             class="rounded-lg px-4 py-2 font-semibold transition-colors"
             [class]="
-              inWatchlist() ? 'bg-white/20 hover:bg-white/30' : 'bg-blue-600 hover:bg-blue-500'
+              inWatchlist() ? 'bg-white/20 hover:bg-white/30' : 'bg-brand-600 hover:bg-brand-500'
             "
           >
             {{ inWatchlist() ? '✓ In your watchlist' : '+ Add to watchlist' }}
@@ -126,11 +126,11 @@
     <button
       type="button"
       (click)="details.reload()"
-      class="font-semibold text-blue-600 hover:underline"
+      class="font-semibold text-brand-600 hover:underline"
     >
       Try again
     </button>
     <span class="mx-2">or</span>
-    <a routerLink="/" class="font-semibold text-blue-600 hover:underline">go to the home page</a>
+    <a routerLink="/" class="font-semibold text-brand-600 hover:underline">go to the home page</a>
   </div>
 }

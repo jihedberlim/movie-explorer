@@ -1,11 +1,11 @@
-<section class="mb-8">
-  <h2 class="mb-3 text-xl font-bold">{{ title() }}</h2>
+<section class="mb-10">
+  <h2 class="mb-4 border-l-4 border-brand-600 pl-3 text-xl font-bold sm:text-2xl">{{ title() }}</h2>
 
   @if (items(); as items) {
     @if (items.length === 0) {
       <p class="py-6 text-sm text-gray-500">Nothing to show here right now.</p>
     } @else {
-      <div class="flex snap-x gap-4 overflow-x-auto pb-2">
+      <div class="flex snap-x gap-4 overflow-x-auto pt-1 pb-2">
         @for (item of items; track item.id) {
           <div class="w-36 shrink-0 snap-start sm:w-40">
             <app-movie-card [item]="item" />

@@ -1,3 +1,42 @@
+@if (hero(); as hero) {
+  <section
+    class="relative -mx-4 -mt-6 mb-10 overflow-hidden bg-gray-900 text-white sm:mx-0 sm:mt-0 sm:rounded-2xl"
+  >
+    <img
+      [src]="tmdb.getImageUrl(hero.item.backdrop_path, 'w1280')"
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/10"></div>
+    <div class="absolute inset-0 bg-linear-to-r from-black/70 to-transparent"></div>
+
+    <div class="relative flex min-h-80 flex-col justify-end gap-3 p-6 sm:min-h-104 sm:p-10">
+      <p class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Featured</p>
+      <h1 class="max-w-2xl text-3xl font-extrabold sm:text-5xl">{{ hero.title }}</h1>
+      <div class="flex items-center gap-3 text-sm text-gray-300">
+        <app-rating-badge [rating]="hero.item.vote_average" />
+        @if (hero.year) {
+          <span>{{ hero.year }}</span>
+        }
+      </div>
+      <p class="line-clamp-3 max-w-2xl text-gray-200">{{ hero.item.overview }}</p>
+      <div class="mt-2">
+        <a
+          [routerLink]="hero.link"
+          class="inline-block rounded-lg bg-brand-600 px-5 py-2.5 font-semibold transition-colors hover:bg-brand-500"
+        >
+          See details
+        </a>
+      </div>
+    </div>
+  </section>
+} @else if (trending() === undefined) {
+  <div
+    class="-mx-4 -mt-6 mb-10 min-h-80 animate-pulse bg-gray-200 sm:mx-0 sm:mt-0 sm:min-h-104 sm:rounded-2xl dark:bg-gray-800"
+    aria-hidden="true"
+  ></div>
+}
+
 <app-media-carousel title="Trending this week" [items]="trending()" />
 <app-media-carousel title="Top rated movies" [items]="topRated()" />
 <app-media-carousel title="Coming soon" [items]="upcoming()" />

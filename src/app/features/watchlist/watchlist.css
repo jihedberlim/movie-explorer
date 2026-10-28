@@ -6,5 +6,5 @@
 }
 
 .filter-button.active {
-  @apply border-blue-600 bg-blue-600 text-white;
+  @apply border-brand-600 bg-brand-600 text-white;
 }

@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { MediaItem } from '../../core/models/media.model';
+import { WatchlistService } from '../../core/services/watchlist.service';
 import { MovieCard } from './movie-card';
 
 describe('MovieCard', () => {
@@ -18,6 +19,7 @@ describe('MovieCard', () => {
   };
 
   beforeEach(async () => {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [MovieCard],
       providers: [provideRouter([]), provideHttpClient()],
@@ -51,5 +53,21 @@ describe('MovieCard', () => {
   it('should not render an image when there is no poster', async () => {
     const card = await render({ ...movie, poster_path: null });
     expect(card.querySelector('img')).toBeNull();
+  });
+
+  it('should add the title to the watchlist and remove it on a second click', async () => {
+    const card = await render(movie);
+    const watchlist = TestBed.inject(WatchlistService);
+    const button = card.querySelector('button') as HTMLButtonElement;
+
+    button.click();
+    await fixture.whenStable();
+    expect(watchlist.has('movie', 157336)).toBe(true);
+    expect(button.getAttribute('aria-label')).toBe('Remove Interstellar from watchlist');
+
+    button.click();
+    await fixture.whenStable();
+    expect(watchlist.has('movie', 157336)).toBe(false);
+    expect(button.getAttribute('aria-label')).toBe('Add Interstellar to watchlist');
   });
 });

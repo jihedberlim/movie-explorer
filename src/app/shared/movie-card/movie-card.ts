@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MediaItem } from '../../core/models/media.model';
 import { TmdbService } from '../../core/services/tmdb.service';
+import { WatchlistService } from '../../core/services/watchlist.service';
 import { getMediaType, getTitle, getYear } from '../../core/utils/media.utils';
 import { RatingBadge } from '../rating-badge/rating-badge';
 
@@ -13,6 +14,7 @@ import { RatingBadge } from '../rating-badge/rating-badge';
 })
 export class MovieCard {
   private readonly tmdb = inject(TmdbService);
+  private readonly watchlist = inject(WatchlistService);
 
   readonly item = input.required<MediaItem>();
 
@@ -22,4 +24,16 @@ export class MovieCard {
   protected readonly posterUrl = computed(() =>
     this.tmdb.getImageUrl(this.item().poster_path, 'w342'),
   );
+  protected readonly inWatchlist = computed(() =>
+    this.watchlist.has(getMediaType(this.item()), this.item().id),
+  );
+
+  toggleWatchlist(): void {
+    const item = this.item();
+    if (this.inWatchlist()) {
+      this.watchlist.remove(getMediaType(item), item.id);
+    } else {
+      this.watchlist.add(item);
+    }
+  }
 }

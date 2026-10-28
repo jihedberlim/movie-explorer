@@ -2,3 +2,22 @@
 
 /* Dark mode follows the "dark" class on <html> (our toggle), not the OS setting */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Violet on purpose: green, yellow and red already mean something in the rating badge */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: oklch(96.9% 0.016 293.756);
+  --color-brand-100: oklch(94.3% 0.029 294.588);
+  --color-brand-400: oklch(70.2% 0.183 293.541);
+  --color-brand-500: oklch(60.6% 0.25 292.717);
+  --color-brand-600: oklch(54.1% 0.281 293.009);
+  --color-brand-700: oklch(49.1% 0.27 292.581);
+  --color-brand-950: oklch(28.3% 0.141 291.089);
+}
+
+h1,
+h2 {
+  @apply font-display tracking-tight;
+}
