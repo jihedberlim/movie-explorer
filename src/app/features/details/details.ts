@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MediaType, Video } from '../../core/models/media.model';
 import { TmdbService } from '../../core/services/tmdb.service';
+import { WatchlistService } from '../../core/services/watchlist.service';
 import { findTrailer, getRuntime, getTitle, getYear } from '../../core/utils/media.utils';
 import { DurationPipe } from '../../shared/duration/duration-pipe';
 import { MediaCarousel } from '../../shared/media-carousel/media-carousel';
@@ -16,6 +17,7 @@ import { RatingBadge } from '../../shared/rating-badge/rating-badge';
 })
 export class Details {
   protected readonly tmdb = inject(TmdbService);
+  private readonly watchlist = inject(WatchlistService);
   private readonly sanitizer = inject(DomSanitizer);
 
   // Both come from the route: "type" from the route data, "id" from the URL (/movie/:id)
@@ -28,6 +30,24 @@ export class Details {
     params: () => ({ type: this.type(), id: Number(this.id()) }),
     stream: ({ params }) => this.tmdb.getDetails(params.type, params.id),
   });
+
+  // Updates by itself when the watchlist changes, because it reads the watchlist signal
+  protected readonly inWatchlist = computed(() =>
+    this.watchlist.has(this.type(), Number(this.id())),
+  );
+
+  toggleWatchlist(): void {
+    const media = this.details.value();
+    if (!media) {
+      return;
+    }
+
+    if (this.inWatchlist()) {
+      this.watchlist.remove(this.type(), media.id);
+    } else {
+      this.watchlist.add(media);
+    }
+  }
 
   // Everything the template shows, ready to use. null while there is no data yet.
   protected readonly view = computed(() => {

@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { MediaDetails } from '../../core/models/media.model';
+import { WatchlistService } from '../../core/services/watchlist.service';
 import { Details } from './details';
 
 describe('Details', () => {
@@ -42,6 +43,7 @@ describe('Details', () => {
   }
 
   beforeEach(async () => {
+    localStorage.clear(); // each test starts with an empty watchlist
     await TestBed.configureTestingModule({
       imports: [Details],
       providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
@@ -59,6 +61,26 @@ describe('Details', () => {
     open('movie', '157336');
 
     httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/157336`);
+  });
+
+  it('should add the title to the watchlist and remove it again', async () => {
+    open('movie', '157336');
+    httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/157336`).flush(createDetails());
+    await fixture.whenStable();
+    const watchlist = TestBed.inject(WatchlistService);
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    expect(button.textContent).toContain('Add to watchlist');
+
+    button.click();
+    await fixture.whenStable();
+
+    expect(watchlist.has('movie', 157336)).toBe(true);
+    expect(button.textContent).toContain('In your watchlist');
+
+    button.click();
+    await fixture.whenStable();
+
+    expect(watchlist.has('movie', 157336)).toBe(false);
   });
 
   it('should request TV show details for a TV route', () => {

@@ -1,9 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { TmdbService } from '../../core/services/tmdb.service';
+import { WatchlistService } from '../../core/services/watchlist.service';
+import { RatingBadge } from '../../shared/rating-badge/rating-badge';
+
+type WatchlistFilter = 'all' | 'to-watch' | 'watched';
 
 @Component({
-  imports: [],
   selector: 'app-watchlist',
-  styleUrl: './watchlist.css',
+  imports: [RouterLink, RatingBadge],
   templateUrl: './watchlist.html',
+  styleUrl: './watchlist.css',
 })
-export class Watchlist {}
+export class Watchlist {
+  protected readonly watchlist = inject(WatchlistService);
+  protected readonly tmdb = inject(TmdbService);
+
+  protected readonly filter = signal<WatchlistFilter>('all');
+
+  // All these recalculate by themselves when the watchlist or the filter change
+  protected readonly toWatchCount = computed(
+    () => this.watchlist.items().filter((item) => !item.watched).length,
+  );
+  protected readonly watchedCount = computed(
+    () => this.watchlist.items().filter((item) => item.watched).length,
+  );
+  protected readonly visibleItems = computed(() => {
+    const items = this.watchlist.items();
+    if (this.filter() === 'to-watch') {
+      return items.filter((item) => !item.watched);
+    }
+    if (this.filter() === 'watched') {
+      return items.filter((item) => item.watched);
+    }
+    return items;
+  });
+}

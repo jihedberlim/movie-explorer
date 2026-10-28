@@ -1,0 +1,11 @@
+/* Lets this file use Tailwind classes (and our "dark" setting) with @apply */
+@reference '../../../styles.css';
+
+.filter-button {
+  @apply rounded-full border border-gray-300 px-4 py-1 text-sm dark:border-gray-700;
+}
+
+/* The filter that is selected now */
+.filter-button.active {
+  @apply border-blue-600 bg-blue-600 text-white;
+}

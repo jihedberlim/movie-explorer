@@ -3,7 +3,14 @@
     <a routerLink="/" class="text-lg font-bold">Movie Explorer</a>
     <a routerLink="/search">Search</a>
     <a routerLink="/discover">Discover</a>
-    <a routerLink="/watchlist">Watchlist</a>
+    <a routerLink="/watchlist" class="flex items-center gap-1">
+      Watchlist
+      @if (watchlist.count() > 0) {
+        <span class="rounded-full bg-blue-600 px-2 text-xs font-bold text-white">
+          {{ watchlist.count() }}
+        </span>
+      }
+    </a>
   </nav>
 </header>
 

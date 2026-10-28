@@ -43,6 +43,19 @@
         @if (view.media.overview) {
           <p class="max-w-3xl leading-relaxed text-gray-200">{{ view.media.overview }}</p>
         }
+
+        <div>
+          <button
+            type="button"
+            (click)="toggleWatchlist()"
+            class="rounded-lg px-4 py-2 font-semibold transition-colors"
+            [class]="
+              inWatchlist() ? 'bg-white/20 hover:bg-white/30' : 'bg-blue-600 hover:bg-blue-500'
+            "
+          >
+            {{ inWatchlist() ? '✓ In your watchlist' : '+ Add to watchlist' }}
+          </button>
+        </div>
       </div>
     </div>
   </section>
