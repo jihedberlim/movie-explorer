@@ -18,7 +18,6 @@ export class Watchlist {
 
   protected readonly filter = signal<WatchlistFilter>('all');
 
-  // All these recalculate by themselves when the watchlist or the filter change
   protected readonly toWatchCount = computed(
     () => this.watchlist.items().filter((item) => !item.watched).length,
   );

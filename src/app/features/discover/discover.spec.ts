@@ -25,7 +25,6 @@ describe('Discover', () => {
     return { page, results, total_pages: totalPages, total_results: results.length };
   }
 
-  // Opens the page as if the URL had these query params
   async function open(queryParams: Record<string, string> = {}) {
     for (const [name, value] of Object.entries(queryParams)) {
       fixture.componentRef.setInput(name, value);
@@ -57,7 +56,6 @@ describe('Discover', () => {
 
     fixture = TestBed.createComponent(Discover);
     httpTesting = TestBed.inject(HttpTestingController);
-    // We only check where the page asks to go; we don't really navigate
     navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
   });
 

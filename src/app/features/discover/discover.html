@@ -11,7 +11,7 @@
     <span class="font-semibold">Genre</span>
     <select #genreSelect (change)="setGenre(genreSelect.value)" class="filter-select">
       <option value="">All genres</option>
-      @for (genre of genres.value() ?? []; track genre.id) {
+      @for (genre of genres.hasValue() ? genres.value() : []; track genre.id) {
         <option [value]="genre.id" [selected]="filters().genreId === genre.id">
           {{ genre.name }}
         </option>
@@ -39,16 +39,29 @@
   </label>
 </div>
 
-<!-- 2 columns on phones, up to 6 on large screens -->
+@if (!loading() && results().length === 0) {
+  <div class="py-16 text-center text-gray-500">
+    <p class="mb-2">No titles match these filters.</p>
+    <button
+      type="button"
+      (click)="clearFilters()"
+      class="font-semibold text-blue-600 hover:underline"
+    >
+      Clear filters
+    </button>
+  </div>
+}
+
 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
   @for (item of results(); track item.id) {
     <app-movie-card [item]="item" />
   }
+  @if (loading()) {
+    @for (skeleton of skeletons; track $index) {
+      <app-skeleton-card />
+    }
+  }
 </div>
-
-@if (loading()) {
-  <p class="py-6 text-center text-gray-500">Loading...</p>
-}
 
 @if (hasMore() && !loading()) {
   <div appInfiniteScroll (scrolled)="loadMore()" class="h-1"></div>

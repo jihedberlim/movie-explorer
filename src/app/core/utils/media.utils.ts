@@ -9,12 +9,11 @@ import {
 
 export type RatingLevel = 'high' | 'medium' | 'low' | 'none';
 
-// Movies have "title" and TV shows have "name"
 export function getTitle(item: MediaItem): string {
   return item.title ?? item.name ?? 'Untitled';
 }
 
-// "2014-11-05" -> "2014". TMDB sometimes sends an empty string when the date is unknown.
+// TMDB sends an empty string when the date is unknown
 export function getYear(item: MediaItem): string | null {
   const date = item.release_date || item.first_air_date;
   return date ? date.slice(0, 4) : null;
@@ -29,12 +28,11 @@ export function getMediaType(item: MediaItem): MediaType {
   return item.title !== undefined ? 'movie' : 'tv';
 }
 
-// Trending and search can also return people (actors, directors), which we don't show
+// Trending and search also return people (actors, directors)
 export function onlyMoviesAndTv(items: MediaItem[]): MediaItem[] {
   return items.filter((item) => item.media_type !== 'person');
 }
 
-// Adds the next page to the current list, skipping titles that are already there.
 // TMDB sometimes repeats a title on two pages. A movie and a TV show can share the
 // same id, so the type is part of the check.
 export function appendUnique(current: MediaItem[], next: MediaItem[]): MediaItem[] {
@@ -43,14 +41,11 @@ export function appendUnique(current: MediaItem[], next: MediaItem[]): MediaItem
   return [...current, ...newItems];
 }
 
-// Movies have "runtime"; TV shows have "episode_run_time" (minutes of one episode).
-// TMDB sends 0 or an empty list when it doesn't know.
+// TMDB sends 0 or an empty list when it doesn't know the runtime
 export function getRuntime(details: MediaDetails): number | null {
   return details.runtime || details.episode_run_time?.[0] || null;
 }
 
-// TMDB sends many videos (trailers, clips, behind the scenes...).
-// We want a YouTube trailer, or a teaser when there is no trailer.
 export function findTrailer(videos: Video[]): Video | null {
   const youtubeVideos = videos.filter((video) => video.site === 'YouTube');
   return (
@@ -76,7 +71,6 @@ export function getRatingLevel(rating: number): RatingLevel {
 
 export const DISCOVER_SORTS: DiscoverSort[] = ['popular', 'top_rated', 'newest'];
 
-// The Discover filters as they come from the URL: always text, and maybe missing
 export interface DiscoverQueryParams {
   type?: string;
   genre?: string;

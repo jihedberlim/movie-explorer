@@ -18,7 +18,6 @@ export class MovieCard {
 
   protected readonly title = computed(() => getTitle(this.item()));
   protected readonly year = computed(() => getYear(this.item()));
-  // e.g. ['/', 'movie', 157336] -> /movie/157336
   protected readonly link = computed(() => ['/', getMediaType(this.item()), this.item().id]);
   protected readonly posterUrl = computed(() =>
     this.tmdb.getImageUrl(this.item().poster_path, 'w342'),

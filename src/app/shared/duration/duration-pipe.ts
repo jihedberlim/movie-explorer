@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// Turns minutes into a friendly text: 142 -> "2h 22min"
 @Pipe({
   name: 'duration',
 })

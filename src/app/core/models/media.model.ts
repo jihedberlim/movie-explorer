@@ -1,9 +1,7 @@
-// Shapes of the data returned by the TMDB API.
-// Field names use snake_case because that is how TMDB sends them.
+// Field names use snake_case because that is how TMDB sends them
 
 export type MediaType = 'movie' | 'tv';
 
-// A movie or a TV show in a list (home carousels, search, discover).
 // Movies use "title" and "release_date"; TV shows use "name" and "first_air_date".
 export interface MediaItem {
   id: number;
@@ -20,7 +18,6 @@ export interface MediaItem {
   media_type?: MediaType | 'person';
 }
 
-// TMDB splits long lists into pages
 export interface PagedResponse<T> {
   page: number;
   results: T[];
@@ -47,8 +44,6 @@ export interface Video {
   type: string;
 }
 
-// Full details of one movie or TV show, with cast, videos and similar titles
-// fetched in the same request (append_to_response)
 export interface MediaDetails extends MediaItem {
   genres: Genre[];
   runtime?: number;
@@ -60,7 +55,6 @@ export interface MediaDetails extends MediaItem {
 
 export type DiscoverSort = 'popular' | 'top_rated' | 'newest';
 
-// Filters used by the Discover page
 export interface DiscoverFilters {
   type: MediaType;
   genreId?: number;

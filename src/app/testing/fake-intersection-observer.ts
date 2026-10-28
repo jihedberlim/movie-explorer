@@ -1,5 +1,4 @@
 // The test browser (jsdom) has no IntersectionObserver, so tests use this fake one.
-// Call FakeIntersectionObserver.showOnScreen() to pretend the element appeared on the screen.
 export class FakeIntersectionObserver {
   static instances: FakeIntersectionObserver[] = [];
 

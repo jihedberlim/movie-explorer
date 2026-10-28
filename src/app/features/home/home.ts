@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
+import { MediaItem, PagedResponse } from '../../core/models/media.model';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { onlyMoviesAndTv } from '../../core/utils/media.utils';
 import { MediaCarousel } from '../../shared/media-carousel/media-carousel';
@@ -14,17 +15,18 @@ import { MediaCarousel } from '../../shared/media-carousel/media-carousel';
 export class Home {
   private readonly tmdb = inject(TmdbService);
 
-  // toSignal turns each request into a signal: it starts as [] and updates when the data arrives
-  protected readonly trending = toSignal(
-    this.tmdb.getTrending().pipe(map((response) => onlyMoviesAndTv(response.results))),
-    { initialValue: [] },
-  );
-  protected readonly topRated = toSignal(
-    this.tmdb.getTopRated().pipe(map((response) => response.results)),
-    { initialValue: [] },
-  );
-  protected readonly upcoming = toSignal(
-    this.tmdb.getUpcoming().pipe(map((response) => response.results)),
-    { initialValue: [] },
-  );
+  // Each signal is undefined while loading, so the carousel shows skeletons
+  protected readonly trending = this.toItems(this.tmdb.getTrending());
+  protected readonly topRated = this.toItems(this.tmdb.getTopRated());
+  protected readonly upcoming = this.toItems(this.tmdb.getUpcoming());
+
+  private toItems(request: Observable<PagedResponse<MediaItem>>) {
+    return toSignal(
+      request.pipe(
+        map((response) => onlyMoviesAndTv(response.results)),
+        // The error toast already told the user; an empty carousel is better than a broken page
+        catchError(() => of([])),
+      ),
+    );
+  }
 }

@@ -5,10 +5,9 @@
         [src]="url"
         [alt]="title()"
         loading="lazy"
-        class="h-full w-full object-cover transition-transform group-hover:scale-105"
+        class="h-full w-full object-cover text-transparent transition-transform group-hover:scale-105"
       />
     } @else {
-      <!-- No poster: show the title on a gray box instead of a broken image -->
       <div class="flex h-full items-center justify-center p-2 text-center text-sm text-gray-500">
         {{ title() }}
       </div>

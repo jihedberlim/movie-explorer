@@ -18,7 +18,6 @@ describe('TmdbService', () => {
   });
 
   afterEach(() => {
-    // Fails the test if any request was made that we did not check
     httpTesting.verify();
   });
 

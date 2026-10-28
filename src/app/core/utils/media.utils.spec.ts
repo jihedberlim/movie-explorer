@@ -11,7 +11,6 @@ import {
   parseDiscoverFilters,
 } from './media.utils';
 
-// Builds a fake item with only the fields each test cares about
 function createItem(fields: Partial<MediaItem>): MediaItem {
   return {
     id: 1,

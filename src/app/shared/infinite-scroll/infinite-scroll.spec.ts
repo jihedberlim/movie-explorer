@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { FakeIntersectionObserver } from '../../testing/fake-intersection-observer';
 import { InfiniteScroll } from './infinite-scroll';
 
-// A tiny host component, only to put the directive on an element
 @Component({
   imports: [InfiniteScroll],
   template: `<div appInfiniteScroll (scrolled)="count = count + 1"></div>`,

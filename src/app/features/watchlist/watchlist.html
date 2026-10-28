@@ -35,7 +35,6 @@
     </button>
   </div>
 
-  <!-- 2 columns on phones, up to 6 on large screens -->
   <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
     @for (item of visibleItems(); track item.mediaType + '-' + item.id) {
       <div [class.opacity-60]="item.watched">
@@ -46,7 +45,7 @@
                 [src]="posterUrl"
                 [alt]="item.title"
                 loading="lazy"
-                class="h-full w-full object-cover"
+                class="h-full w-full object-cover text-transparent"
               />
             } @else {
               <div

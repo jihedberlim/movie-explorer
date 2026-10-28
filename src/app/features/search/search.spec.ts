@@ -25,7 +25,6 @@ describe('Search', () => {
     return { page, results, total_pages: totalPages, total_results: results.length };
   }
 
-  // Creates the page as if the browser opened /search?q=<urlQuery>
   function setup(urlQuery: string | null = null) {
     TestBed.configureTestingModule({
       imports: [Search],
@@ -46,7 +45,6 @@ describe('Search', () => {
     fixture.detectChanges();
   }
 
-  // Types in the search box like a user would
   function type(text: string) {
     const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
     input.value = text;
@@ -59,7 +57,6 @@ describe('Search', () => {
   }
 
   beforeEach(() => {
-    // A fake clock: we move time forward ourselves instead of really waiting
     vi.useFakeTimers();
     vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
   });
@@ -137,5 +134,45 @@ describe('Search', () => {
     vi.advanceTimersByTime(400);
 
     expect(countCards()).toBe(0);
+  });
+
+  it('should show skeletons while searching', () => {
+    setup();
+
+    type('Dune');
+    vi.advanceTimersByTime(400);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('app-skeleton-card').length).toBeGreaterThan(0);
+    httpTesting.expectOne((r) => r.url === searchUrl).flush(createPage(1, 1, ['Dune']));
+  });
+
+  it('should say when nothing was found', () => {
+    setup();
+
+    type('xyzxyz');
+    vi.advanceTimersByTime(400);
+    httpTesting.expectOne((r) => r.url === searchUrl).flush(createPage(1, 0, []));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('No results for "xyzxyz"');
+  });
+
+  it('should keep searching after a failed search', () => {
+    setup();
+
+    type('Dune');
+    vi.advanceTimersByTime(400);
+    httpTesting
+      .expectOne((r) => r.url === searchUrl)
+      .flush(null, { status: 500, statusText: 'Server Error' });
+
+    type('Alien');
+    vi.advanceTimersByTime(400);
+
+    const req = httpTesting.expectOne((r) => r.url === searchUrl);
+    expect(req.request.params.get('query')).toBe('Alien');
+    req.flush(createPage(1, 1, ['Alien']));
+    expect(countCards()).toBe(1);
   });
 });

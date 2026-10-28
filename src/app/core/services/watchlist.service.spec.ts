@@ -25,7 +25,6 @@ describe('WatchlistService', () => {
     first_air_date: '2008-01-20',
   };
 
-  // Simulates closing and opening the app again: a new service reads the storage
   function reopenApp(): WatchlistService {
     TestBed.resetTestingModule();
     return TestBed.inject(WatchlistService);

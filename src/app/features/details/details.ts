@@ -1,6 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { MediaType, Video } from '../../core/models/media.model';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { WatchlistService } from '../../core/services/watchlist.service';
@@ -11,7 +12,7 @@ import { RatingBadge } from '../../shared/rating-badge/rating-badge';
 
 @Component({
   selector: 'app-details',
-  imports: [DurationPipe, MediaCarousel, RatingBadge],
+  imports: [DurationPipe, MediaCarousel, RatingBadge, RouterLink],
   templateUrl: './details.html',
   styleUrl: './details.css',
 })
@@ -20,27 +21,24 @@ export class Details {
   private readonly watchlist = inject(WatchlistService);
   private readonly sanitizer = inject(DomSanitizer);
 
-  // Both come from the route: "type" from the route data, "id" from the URL (/movie/:id)
   readonly type = input.required<MediaType>();
   readonly id = input.required<string>();
 
-  // Fetches the details again every time type or id change
-  // (e.g. when the user clicks a similar title, this same page is reused with a new id)
+  // Clicking a similar title reuses this page with a new id, so the data must reload
   protected readonly details = rxResource({
     params: () => ({ type: this.type(), id: Number(this.id()) }),
     stream: ({ params }) => this.tmdb.getDetails(params.type, params.id),
   });
 
-  // Updates by itself when the watchlist changes, because it reads the watchlist signal
   protected readonly inWatchlist = computed(() =>
     this.watchlist.has(this.type(), Number(this.id())),
   );
 
   toggleWatchlist(): void {
-    const media = this.details.value();
-    if (!media) {
+    if (!this.details.hasValue()) {
       return;
     }
+    const media = this.details.value();
 
     if (this.inWatchlist()) {
       this.watchlist.remove(this.type(), media.id);
@@ -49,12 +47,12 @@ export class Details {
     }
   }
 
-  // Everything the template shows, ready to use. null while there is no data yet.
   protected readonly view = computed(() => {
-    const media = this.details.value();
-    if (!media) {
+    // value() throws when the request failed, so check first
+    if (!this.details.hasValue()) {
       return null;
     }
+    const media = this.details.value();
 
     return {
       media,

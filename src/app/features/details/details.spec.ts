@@ -35,7 +35,6 @@ describe('Details', () => {
     };
   }
 
-  // Opens the page like the router would for /<type>/<id>
   function open(type: 'movie' | 'tv', id: string) {
     fixture.componentRef.setInput('type', type);
     fixture.componentRef.setInput('id', id);
@@ -61,6 +60,24 @@ describe('Details', () => {
     open('movie', '157336');
 
     httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/157336`);
+  });
+
+  it('should show an error message with a retry button when loading fails', async () => {
+    open('movie', '999999999');
+    httpTesting
+      .expectOne((r) => r.url === `${apiUrl}/movie/999999999`)
+      .flush(null, { status: 404, statusText: 'Not Found' });
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.textContent).toContain("We couldn't load this title");
+
+    const retryButton: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    retryButton.click();
+    TestBed.tick();
+
+    httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/999999999`).flush(createDetails());
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('h1').textContent).toContain('Interstellar');
   });
 
   it('should add the title to the watchlist and remove it again', async () => {
