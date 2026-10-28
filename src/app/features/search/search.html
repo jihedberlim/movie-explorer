@@ -1,15 +1,17 @@
 <input
   type="search"
   [formControl]="queryControl"
-  placeholder="Search movies and TV shows..."
-  aria-label="Search movies and TV shows"
+  [placeholder]="i18n.t('search.placeholder')"
+  [attr.aria-label]="i18n.t('search.label')"
   class="mb-6 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-brand-500 dark:border-gray-700 dark:bg-gray-900"
 />
 
 @if (query() === '') {
-  <p class="py-16 text-center text-gray-500">Type the name of a movie or TV show to search.</p>
+  <p class="py-16 text-center text-gray-500">{{ i18n.t('search.hint') }}</p>
 } @else if (!loading() && results().length === 0) {
-  <p class="py-16 text-center text-gray-500">No results for "{{ query() }}".</p>
+  <p class="py-16 text-center text-gray-500">
+    {{ i18n.t('search.noResults', { query: query() }) }}
+  </p>
 }
 
 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">

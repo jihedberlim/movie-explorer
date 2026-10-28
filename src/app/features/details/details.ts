@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { MediaType, Video } from '../../core/models/media.model';
+import { LanguageService } from '../../core/services/language.service';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { WatchlistService } from '../../core/services/watchlist.service';
 import { findTrailer, getRuntime, getTitle, getYear } from '../../core/utils/media.utils';
@@ -17,6 +18,8 @@ import { RatingBadge } from '../../shared/rating-badge/rating-badge';
   styleUrl: './details.css',
 })
 export class Details {
+  protected readonly i18n = inject(LanguageService);
+
   protected readonly tmdb = inject(TmdbService);
   private readonly watchlist = inject(WatchlistService);
   private readonly sanitizer = inject(DomSanitizer);

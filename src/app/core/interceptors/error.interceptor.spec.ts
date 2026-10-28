@@ -2,7 +2,7 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ToastService } from '../services/toast.service';
-import { LOAD_ERROR_MESSAGE, errorInterceptor } from './error.interceptor';
+import { errorInterceptor } from './error.interceptor';
 
 describe('errorInterceptor', () => {
   let http: HttpClient;
@@ -31,7 +31,9 @@ describe('errorInterceptor', () => {
 
     httpTesting.expectOne('/data').flush(null, { status: 500, statusText: 'Server Error' });
 
-    expect(toast.toasts().map((item) => item.message)).toEqual([LOAD_ERROR_MESSAGE]);
+    expect(toast.toasts().map((item) => item.message)).toEqual([
+      'Failed to load. Please check your connection and try again.',
+    ]);
     expect(pageGotTheError).toBe(true);
   });
 

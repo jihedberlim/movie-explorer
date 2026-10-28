@@ -1,16 +1,18 @@
 <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
   <label class="flex flex-col gap-1 text-sm">
-    <span class="font-semibold">Type</span>
+    <span class="font-semibold">{{ i18n.t('discover.type') }}</span>
     <select #typeSelect (change)="setType(typeSelect.value)" class="filter-select">
-      <option value="movie" [selected]="filters().type === 'movie'">Movies</option>
-      <option value="tv" [selected]="filters().type === 'tv'">TV shows</option>
+      <option value="movie" [selected]="filters().type === 'movie'">
+        {{ i18n.t('discover.movies') }}
+      </option>
+      <option value="tv" [selected]="filters().type === 'tv'">{{ i18n.t('discover.tv') }}</option>
     </select>
   </label>
 
   <label class="flex flex-col gap-1 text-sm">
-    <span class="font-semibold">Genre</span>
+    <span class="font-semibold">{{ i18n.t('discover.genre') }}</span>
     <select #genreSelect (change)="setGenre(genreSelect.value)" class="filter-select">
-      <option value="">All genres</option>
+      <option value="">{{ i18n.t('discover.allGenres') }}</option>
       @for (genre of genres.hasValue() ? genres.value() : []; track genre.id) {
         <option [value]="genre.id" [selected]="filters().genreId === genre.id">
           {{ genre.name }}
@@ -20,9 +22,9 @@
   </label>
 
   <label class="flex flex-col gap-1 text-sm">
-    <span class="font-semibold">Year</span>
+    <span class="font-semibold">{{ i18n.t('discover.year') }}</span>
     <select #yearSelect (change)="setYear(yearSelect.value)" class="filter-select">
-      <option value="">Any year</option>
+      <option value="">{{ i18n.t('discover.anyYear') }}</option>
       @for (year of years; track year) {
         <option [value]="year" [selected]="filters().year === year">{{ year }}</option>
       }
@@ -30,24 +32,30 @@
   </label>
 
   <label class="flex flex-col gap-1 text-sm">
-    <span class="font-semibold">Sort by</span>
+    <span class="font-semibold">{{ i18n.t('discover.sortBy') }}</span>
     <select #sortSelect (change)="setSort(sortSelect.value)" class="filter-select">
-      <option value="popular" [selected]="filters().sortBy === 'popular'">Most popular</option>
-      <option value="top_rated" [selected]="filters().sortBy === 'top_rated'">Top rated</option>
-      <option value="newest" [selected]="filters().sortBy === 'newest'">Newest</option>
+      <option value="popular" [selected]="filters().sortBy === 'popular'">
+        {{ i18n.t('discover.popular') }}
+      </option>
+      <option value="top_rated" [selected]="filters().sortBy === 'top_rated'">
+        {{ i18n.t('discover.topRated') }}
+      </option>
+      <option value="newest" [selected]="filters().sortBy === 'newest'">
+        {{ i18n.t('discover.newest') }}
+      </option>
     </select>
   </label>
 </div>
 
 @if (!loading() && results().length === 0) {
   <div class="py-16 text-center text-gray-500">
-    <p class="mb-2">No titles match these filters.</p>
+    <p class="mb-2">{{ i18n.t('discover.noResults') }}</p>
     <button
       type="button"
       (click)="clearFilters()"
       class="font-semibold text-brand-600 hover:underline"
     >
-      Clear filters
+      {{ i18n.t('discover.clear') }}
     </button>
   </div>
 }

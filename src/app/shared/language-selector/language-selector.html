@@ -1,0 +1,58 @@
+<div class="relative">
+  <button
+    type="button"
+    (click)="toggle()"
+    [attr.aria-label]="language.t('language.change')"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="true"
+    class="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+  >
+    <img
+      [src]="language.currentOption.flag"
+      alt=""
+      class="h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
+    />
+    {{ language.currentOption.shortLabel }}
+    <svg
+      viewBox="0 0 24 24"
+      class="size-4 transition-transform"
+      [class.rotate-180]="isOpen()"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+
+  @if (isOpen()) {
+    <ul
+      class="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-800 dark:bg-gray-900"
+    >
+      @for (option of languages; track option.code) {
+        <li>
+          <button
+            type="button"
+            (click)="select(option.code)"
+            [attr.lang]="option.code"
+            class="flex w-full items-center gap-3 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+            [class.font-semibold]="option.code === language.current"
+          >
+            <img
+              [src]="option.flag"
+              alt=""
+              class="h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
+            />
+            <span class="flex-1 text-left">{{ option.label }}</span>
+            @if (option.code === language.current) {
+              <span class="text-brand-600 dark:text-brand-400" aria-hidden="true">✓</span>
+            }
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>

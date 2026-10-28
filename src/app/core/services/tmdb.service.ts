@@ -10,10 +10,12 @@ import {
   MediaType,
   PagedResponse,
 } from '../models/media.model';
+import { LanguageService } from './language.service';
 
 @Injectable({ providedIn: 'root' })
 export class TmdbService {
   private readonly http = inject(HttpClient);
+  private readonly language = inject(LanguageService);
   private readonly apiUrl = environment.tmdbApiUrl;
 
   getTrending(): Observable<PagedResponse<MediaItem>> {
@@ -39,8 +41,9 @@ export class TmdbService {
     return this.http.get<MediaDetails>(`${this.apiUrl}/${type}/${id}`, {
       params: {
         append_to_response: 'credits,videos,similar',
-        // Videos in Portuguese first, English as a backup (many titles have no Portuguese trailer)
-        include_video_language: 'pt,en',
+        // Videos in the chosen language first, English as a backup (many titles only have an
+        // English trailer). TMDB wants just the language part here: "pt", not "pt-BR".
+        include_video_language: `${this.language.current.slice(0, 2)},en`,
       },
     });
   }

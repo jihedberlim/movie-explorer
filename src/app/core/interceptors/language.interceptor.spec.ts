@@ -2,13 +2,15 @@ import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
-import { TMDB_LANGUAGE, languageInterceptor } from './language.interceptor';
+import { LANGUAGE_STORAGE_KEY } from '../services/language.service';
+import { languageInterceptor } from './language.interceptor';
 
 describe('languageInterceptor', () => {
   let http: HttpClient;
   let httpTesting: HttpTestingController;
 
   beforeEach(() => {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, 'pt-BR');
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(withInterceptors([languageInterceptor])),
@@ -23,12 +25,12 @@ describe('languageInterceptor', () => {
     httpTesting.verify();
   });
 
-  it('should add the language to TMDB requests, keeping the other params', () => {
+  it('should add the chosen language to TMDB requests, keeping the other params', () => {
     const url = `${environment.tmdbApiUrl}/search/multi`;
     http.get(url, { params: { query: 'Vingadores' } }).subscribe();
 
     const req = httpTesting.expectOne((r) => r.url === url);
-    expect(req.request.params.get('language')).toBe(TMDB_LANGUAGE);
+    expect(req.request.params.get('language')).toBe('pt-BR');
     expect(req.request.params.get('query')).toBe('Vingadores');
   });
 

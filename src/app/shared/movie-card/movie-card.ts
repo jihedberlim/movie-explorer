@@ -1,6 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MediaItem } from '../../core/models/media.model';
+import { LanguageService } from '../../core/services/language.service';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { WatchlistService } from '../../core/services/watchlist.service';
 import { getMediaType, getTitle, getYear } from '../../core/utils/media.utils';
@@ -13,6 +14,8 @@ import { RatingBadge } from '../rating-badge/rating-badge';
   styleUrl: './movie-card.css',
 })
 export class MovieCard {
+  protected readonly i18n = inject(LanguageService);
+
   private readonly tmdb = inject(TmdbService);
   private readonly watchlist = inject(WatchlistService);
 

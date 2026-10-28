@@ -2,12 +2,14 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import {
   PreloadAllModules,
+  TitleStrategy,
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
   withPreloading,
 } from '@angular/router';
 import { routes } from './app.routes';
+import { TranslatedTitleStrategy } from './core/i18n/translated-title.strategy';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { languageInterceptor } from './core/interceptors/language.interceptor';
@@ -24,5 +26,6 @@ export const appConfig: ApplicationConfig = {
       withPreloading(PreloadAllModules),
     ),
     provideHttpClient(withInterceptors([authInterceptor, languageInterceptor, errorInterceptor])),
+    { provide: TitleStrategy, useClass: TranslatedTitleStrategy },
   ],
 };

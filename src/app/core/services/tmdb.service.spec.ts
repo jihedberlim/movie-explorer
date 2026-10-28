@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '../../../environments/environment';
+import { LANGUAGE_STORAGE_KEY } from './language.service';
 import { TmdbService } from './tmdb.service';
 
 describe('TmdbService', () => {
@@ -10,6 +11,7 @@ describe('TmdbService', () => {
   let httpTesting: HttpTestingController;
 
   beforeEach(() => {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, 'pt-BR');
     TestBed.configureTestingModule({
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
@@ -55,7 +57,7 @@ describe('TmdbService', () => {
     expect(req.request.params.get('page')).toBe('1');
   });
 
-  it('should get details with cast, videos and similar titles', () => {
+  it('should get details with cast, videos in the chosen language and similar titles', () => {
     service.getDetails('tv', 1396).subscribe();
 
     const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/tv/1396`);

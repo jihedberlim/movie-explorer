@@ -1,9 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { Observable, catchError, map, of } from 'rxjs';
 import { MediaItem, PagedResponse } from '../../core/models/media.model';
+import { LanguageService } from '../../core/services/language.service';
 import { TmdbService } from '../../core/services/tmdb.service';
-import { RouterLink } from '@angular/router';
 import {
   getMediaType,
   getTitle,
@@ -21,6 +22,8 @@ import { RatingBadge } from '../../shared/rating-badge/rating-badge';
   styleUrl: './home.css',
 })
 export class Home {
+  protected readonly i18n = inject(LanguageService);
+
   protected readonly tmdb = inject(TmdbService);
 
   // Each signal is undefined while loading, so the carousel shows skeletons

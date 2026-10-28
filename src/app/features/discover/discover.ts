@@ -3,6 +3,7 @@ import { rxResource, takeUntilDestroyed, toObservable } from '@angular/core/rxjs
 import { Router } from '@angular/router';
 import { catchError, of, switchMap, tap } from 'rxjs';
 import { MediaItem, PagedResponse } from '../../core/models/media.model';
+import { LanguageService } from '../../core/services/language.service';
 import { TmdbService } from '../../core/services/tmdb.service';
 import { appendUnique, parseDiscoverFilters } from '../../core/utils/media.utils';
 import { InfiniteScroll } from '../../shared/infinite-scroll/infinite-scroll';
@@ -27,6 +28,8 @@ const YEARS = Array.from({ length: NEXT_YEAR - FIRST_YEAR + 1 }, (_, index) => N
   styleUrl: './discover.css',
 })
 export class Discover {
+  protected readonly i18n = inject(LanguageService);
+
   private readonly tmdb = inject(TmdbService);
   private readonly router = inject(Router);
 

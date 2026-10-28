@@ -1,21 +1,21 @@
 <div class="flex flex-col items-center py-20 text-center">
   <p class="text-7xl font-black text-brand-600">404</p>
-  <h1 class="mt-4 text-2xl font-bold">Page not found</h1>
+  <h1 class="mt-4 text-2xl font-bold">{{ i18n.t('notFound.title') }}</h1>
   <p class="mt-2 max-w-md text-gray-500">
-    This scene didn't make the final cut. The page you are looking for doesn't exist or was moved.
+    {{ i18n.t('notFound.text') }}
   </p>
   <div class="mt-8 flex flex-wrap justify-center gap-3">
     <a
       routerLink="/"
       class="rounded-lg bg-brand-600 px-5 py-2 font-semibold text-white hover:bg-brand-500"
     >
-      Go to the home page
+      {{ i18n.t('notFound.goHome') }}
     </a>
     <a
       routerLink="/discover"
       class="rounded-lg border border-gray-300 px-5 py-2 font-semibold hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
     >
-      Discover titles
+      {{ i18n.t('notFound.discover') }}
     </a>
   </div>
 </div>

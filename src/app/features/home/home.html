@@ -11,7 +11,9 @@
     <div class="absolute inset-0 bg-linear-to-r from-black/70 to-transparent"></div>
 
     <div class="relative flex min-h-80 flex-col justify-end gap-3 p-6 sm:min-h-104 sm:p-10">
-      <p class="text-xs font-semibold tracking-widest text-brand-400 uppercase">Featured</p>
+      <p class="text-xs font-semibold tracking-widest text-brand-400 uppercase">
+        {{ i18n.t('home.featured') }}
+      </p>
       <h1 class="max-w-2xl text-3xl font-extrabold sm:text-5xl">{{ hero.title }}</h1>
       <div class="flex items-center gap-3 text-sm text-gray-300">
         <app-rating-badge [rating]="hero.item.vote_average" />
@@ -25,7 +27,7 @@
           [routerLink]="hero.link"
           class="inline-block rounded-lg bg-brand-600 px-5 py-2.5 font-semibold transition-colors hover:bg-brand-500"
         >
-          See details
+          {{ i18n.t('home.seeDetails') }}
         </a>
       </div>
     </div>
@@ -37,6 +39,6 @@
   ></div>
 }
 
-<app-media-carousel title="Trending this week" [items]="trending()" />
-<app-media-carousel title="Top rated movies" [items]="topRated()" />
-<app-media-carousel title="Coming soon" [items]="upcoming()" />
+<app-media-carousel [title]="i18n.t('home.trending')" [items]="trending()" />
+<app-media-carousel [title]="i18n.t('home.topRated')" [items]="topRated()" />
+<app-media-carousel [title]="i18n.t('home.upcoming')" [items]="upcoming()" />

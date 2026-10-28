@@ -8,7 +8,7 @@
       <button
         type="button"
         (click)="toastService.dismiss(toast.id)"
-        aria-label="Close"
+        [attr.aria-label]="i18n.t('toast.close')"
         class="font-bold opacity-80 hover:opacity-100"
       >
         ✕

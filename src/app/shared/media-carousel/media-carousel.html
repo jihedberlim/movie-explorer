@@ -3,7 +3,7 @@
 
   @if (items(); as items) {
     @if (items.length === 0) {
-      <p class="py-6 text-sm text-gray-500">Nothing to show here right now.</p>
+      <p class="py-6 text-sm text-gray-500">{{ i18n.t('carousel.empty') }}</p>
     } @else {
       <div class="flex snap-x gap-4 overflow-x-auto pt-1 pb-2">
         @for (item of items; track item.id) {

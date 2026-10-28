@@ -36,9 +36,7 @@
   <button
     type="button"
     (click)="toggleWatchlist()"
-    [attr.aria-label]="
-      inWatchlist() ? 'Remove ' + title() + ' from watchlist' : 'Add ' + title() + ' to watchlist'
-    "
+    [attr.aria-label]="i18n.t(inWatchlist() ? 'card.remove' : 'card.add', { title: title() })"
     class="absolute top-2 right-2 rounded-full p-1.5 text-white shadow-md backdrop-blur-sm transition group-hover:-translate-y-1 hover:scale-110"
     [class]="inWatchlist() ? 'bg-brand-600' : 'bg-black/50 hover:bg-black/70'"
   >
