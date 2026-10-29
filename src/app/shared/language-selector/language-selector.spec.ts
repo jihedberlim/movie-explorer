@@ -25,7 +25,7 @@ describe('LanguageSelector', () => {
 
   it('should show the current language and keep the menu closed', () => {
     expect(element.querySelector('button')?.textContent).toContain('EN');
-    expect(element.querySelector('ul')).toBeNull();
+    expect(element.querySelector('ul')?.hidden).toBe(true);
   });
 
   it('should list the three languages and mark the current one', async () => {
@@ -42,7 +42,7 @@ describe('LanguageSelector', () => {
     await fixture.whenStable();
 
     expect(change).toHaveBeenCalledWith('pt-BR');
-    expect(element.querySelector('ul')).toBeNull();
+    expect(element.querySelector('ul')?.hidden).toBe(true);
   });
 
   it('should close the menu when clicking outside of it', async () => {
@@ -51,6 +51,6 @@ describe('LanguageSelector', () => {
     document.body.click();
     await fixture.whenStable();
 
-    expect(element.querySelector('ul')).toBeNull();
+    expect(element.querySelector('ul')?.hidden).toBe(true);
   });
 });

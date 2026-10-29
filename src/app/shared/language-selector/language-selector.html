@@ -28,31 +28,31 @@
     </svg>
   </button>
 
-  @if (isOpen()) {
-    <ul
-      class="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-800 dark:bg-gray-900"
-    >
-      @for (option of languages; track option.code) {
-        <li>
-          <button
-            type="button"
-            (click)="select(option.code)"
-            [attr.lang]="option.code"
-            class="flex w-full items-center gap-3 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-            [class.font-semibold]="option.code === language.current"
-          >
-            <img
-              [src]="option.flag"
-              alt=""
-              class="h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
-            />
-            <span class="flex-1 text-left">{{ option.label }}</span>
-            @if (option.code === language.current) {
-              <span class="text-brand-600 dark:text-brand-400" aria-hidden="true">✓</span>
-            }
-          </button>
-        </li>
-      }
-    </ul>
-  }
+  <!-- Always in the page (just hidden), so the browser downloads the flags before the first click -->
+  <ul
+    [hidden]="!isOpen()"
+    class="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-800 dark:bg-gray-900"
+  >
+    @for (option of languages; track option.code) {
+      <li>
+        <button
+          type="button"
+          (click)="select(option.code)"
+          [attr.lang]="option.code"
+          class="flex w-full items-center gap-3 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+          [class.font-semibold]="option.code === language.current"
+        >
+          <img
+            [src]="option.flag"
+            alt=""
+            class="h-3.5 w-5 rounded-sm object-cover ring-1 ring-black/10"
+          />
+          <span class="flex-1 text-left">{{ option.label }}</span>
+          @if (option.code === language.current) {
+            <span class="text-brand-600 dark:text-brand-400" aria-hidden="true">✓</span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
 </div>

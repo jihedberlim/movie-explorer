@@ -22,6 +22,8 @@ describe('languageInterceptor', () => {
   });
 
   afterEach(() => {
+    // Test files share localStorage, so the language must not leak into the next file
+    localStorage.removeItem(LANGUAGE_STORAGE_KEY);
     httpTesting.verify();
   });
 

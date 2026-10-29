@@ -23,6 +23,11 @@ describe('TranslatedTitleStrategy', () => {
     });
   });
 
+  afterEach(() => {
+    // Test files share localStorage, so the language must not leak into the next file
+    localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+  });
+
   it('should translate the page title and add the app name', async () => {
     const harness = await RouterTestingHarness.create();
     await harness.navigateByUrl('/search');
