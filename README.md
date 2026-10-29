@@ -17,6 +17,8 @@ A movie and TV show explorer built with Angular, signals and the TMDB API.
 <img src="https://img.shields.io/badge/API-TMDB-01B4E4?logo=themoviedatabase&logoColor=white" alt="TMDB API" />
 <img src="https://img.shields.io/badge/Docker-nginx-2496ED?logo=docker&logoColor=white" alt="Docker with nginx" />
 
+<a href="https://movie-explorer-liard-zeta.vercel.app"><img src="https://img.shields.io/badge/Ver_ao_vivo_%C2%B7_Live_demo-7C3AED?style=for-the-badge&logo=vercel&logoColor=white" alt="Ver ao vivo · Live demo" /></a>
+
 <a href="#portugues"><img src="public/flags/br.svg" alt="" width="20" /> <b>Português</b></a>
 &nbsp;·&nbsp;
 <a href="#english"><img src="public/flags/us.svg" alt="" width="20" /> <b>English</b></a>
@@ -34,6 +36,8 @@ A movie and TV show explorer built with Angular, signals and the TMDB API.
 ## <img src="public/flags/br.svg" alt="" width="24" /> Português
 
 Busque filmes e séries, filtre por gênero e ano, veja os detalhes com trailer e elenco, explore a filmografia de um ator e monte a sua própria lista para assistir. Não tem back-end próprio: o app conversa direto com a [API do TMDB](https://www.themoviedb.org/documentation/api) e guarda a lista no navegador (`localStorage`).
+
+**Ver ao vivo:** [movie-explorer-liard-zeta.vercel.app](https://movie-explorer-liard-zeta.vercel.app)
 
 ### Demonstração
 
@@ -156,7 +160,7 @@ src/app/
 - [x] Testes E2E com Playwright (com a API do TMDB mockada)
 - [x] Dockerfile (Node faz o build, nginx serve) para rodar com `docker compose up --build`
 - [x] GitHub Actions rodando os testes unitários, os E2E e o build do Docker a cada push
-- [ ] Deploy na Vercel
+- [x] Deploy na Vercel
 
 <p align="right"><a href="#movie-explorer">Voltar ao topo ↑</a></p>
 
@@ -167,6 +171,8 @@ src/app/
 ## <img src="public/flags/us.svg" alt="" width="24" /> English
 
 Search movies and TV shows, filter them by genre and year, see details with the trailer and the cast, browse an actor's filmography and build your own watchlist. There is no back-end of its own: the app talks straight to the [TMDB API](https://www.themoviedb.org/documentation/api) and keeps the watchlist in the browser (`localStorage`).
+
+**Live demo:** [movie-explorer-liard-zeta.vercel.app](https://movie-explorer-liard-zeta.vercel.app)
 
 ### Demo
 
@@ -289,7 +295,7 @@ src/app/
 - [x] E2E tests with Playwright (with the TMDB API mocked)
 - [x] Dockerfile (Node builds, nginx serves) to run with `docker compose up --build`
 - [x] GitHub Actions running the unit tests, the E2E tests and the Docker build on every push
-- [ ] Deploy on Vercel
+- [x] Deploy on Vercel
 
 <p align="right"><a href="#movie-explorer">Back to top ↑</a></p>
 
