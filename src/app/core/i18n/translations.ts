@@ -18,6 +18,7 @@ const en = {
   'title.details': 'Details',
   'title.watchlist': 'My Watchlist',
   'title.notFound': 'Page Not Found',
+  'title.person': 'Person',
 
   'home.featured': 'Featured',
   'home.trending': 'Trending this week',
@@ -69,6 +70,17 @@ const en = {
   'watchlist.removeLabel': 'Remove {title}',
   'watchlist.nothingHere': 'Nothing here yet.',
 
+  'person.born': 'Born',
+  'person.died': 'Died',
+  'person.placeOfBirth': 'Place of birth',
+  'person.age': '{age} years old',
+  'person.biography': 'Biography',
+  'person.noBiography': 'No biography available.',
+  'person.readMore': 'Read more',
+  'person.readLess': 'Show less',
+  'person.knownFor': 'Movies and TV shows',
+  'person.loadError': "We couldn't load this person.",
+
   'notFound.title': 'Page not found',
   'notFound.text':
     "This scene didn't make the final cut. The page you are looking for doesn't exist or was moved.",
@@ -98,6 +110,7 @@ const pt: Translations = {
   'title.details': 'Detalhes',
   'title.watchlist': 'Minha lista',
   'title.notFound': 'Página não encontrada',
+  'title.person': 'Pessoa',
 
   'home.featured': 'Destaque',
   'home.trending': 'Em alta nesta semana',
@@ -149,6 +162,17 @@ const pt: Translations = {
   'watchlist.removeLabel': 'Remover {title}',
   'watchlist.nothingHere': 'Nada aqui ainda.',
 
+  'person.born': 'Nascimento',
+  'person.died': 'Falecimento',
+  'person.placeOfBirth': 'Local de nascimento',
+  'person.age': '{age} anos',
+  'person.biography': 'Biografia',
+  'person.noBiography': 'Nenhuma biografia disponível.',
+  'person.readMore': 'Ler mais',
+  'person.readLess': 'Mostrar menos',
+  'person.knownFor': 'Filmes e séries',
+  'person.loadError': 'Não conseguimos carregar esta pessoa.',
+
   'notFound.title': 'Página não encontrada',
   'notFound.text':
     'Esta cena não entrou na versão final. A página que você procura não existe ou foi movida.',
@@ -175,6 +199,7 @@ const es: Translations = {
   'title.details': 'Detalles',
   'title.watchlist': 'Mi lista',
   'title.notFound': 'Página no encontrada',
+  'title.person': 'Persona',
 
   'home.featured': 'Destacado',
   'home.trending': 'Tendencias de la semana',
@@ -225,6 +250,17 @@ const es: Translations = {
   'watchlist.remove': 'Quitar',
   'watchlist.removeLabel': 'Quitar {title}',
   'watchlist.nothingHere': 'Nada aquí todavía.',
+
+  'person.born': 'Nacimiento',
+  'person.died': 'Fallecimiento',
+  'person.placeOfBirth': 'Lugar de nacimiento',
+  'person.age': '{age} años',
+  'person.biography': 'Biografía',
+  'person.noBiography': 'No hay biografía disponible.',
+  'person.readMore': 'Leer más',
+  'person.readLess': 'Mostrar menos',
+  'person.knownFor': 'Películas y series',
+  'person.loadError': 'No pudimos cargar a esta persona.',
 
   'notFound.title': 'Página no encontrada',
   'notFound.text':

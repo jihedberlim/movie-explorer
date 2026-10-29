@@ -20,6 +20,8 @@ describe('TmdbService', () => {
   });
 
   afterEach(() => {
+    // Test files share localStorage, so the language must not leak into the next file
+    localStorage.removeItem(LANGUAGE_STORAGE_KEY);
     httpTesting.verify();
   });
 
@@ -63,6 +65,13 @@ describe('TmdbService', () => {
     const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/tv/1396`);
     expect(req.request.params.get('append_to_response')).toBe('credits,videos,similar');
     expect(req.request.params.get('include_video_language')).toBe('pt,en');
+  });
+
+  it('should get a person with their movies, TV shows and biography translations', () => {
+    service.getPerson(10297).subscribe();
+
+    const req = httpTesting.expectOne((r) => r.url === `${apiUrl}/person/10297`);
+    expect(req.request.params.get('append_to_response')).toBe('combined_credits,translations');
   });
 
   it('should return only the genres array', () => {

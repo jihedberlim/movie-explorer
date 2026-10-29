@@ -1,0 +1,115 @@
+@if (view(); as view) {
+  <section class="mb-10 flex flex-col gap-6 sm:flex-row sm:gap-8">
+    <div class="w-40 shrink-0 sm:w-64">
+      @if (tmdb.getImageUrl(view.person.profile_path, 'h632'); as photoUrl) {
+        <img
+          [src]="photoUrl"
+          [alt]="view.person.name"
+          class="w-full rounded-xl text-transparent shadow-lg ring-1 ring-black/5 dark:ring-white/10"
+        />
+      } @else {
+        <div
+          class="flex aspect-2/3 items-center justify-center rounded-xl bg-gray-200 p-2 text-center text-gray-500 dark:bg-gray-800"
+        >
+          {{ view.person.name }}
+        </div>
+      }
+    </div>
+
+    <div class="flex min-w-0 flex-col gap-4">
+      <h1 class="text-3xl font-extrabold sm:text-4xl">{{ view.person.name }}</h1>
+
+      <dl class="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+        @if (view.birthday) {
+          <div>
+            <dt class="font-semibold text-gray-500">{{ i18n.t('person.born') }}</dt>
+            <dd>
+              {{ view.birthday }}
+              @if (view.age !== null && !view.deathday) {
+                ({{ i18n.t('person.age', { age: view.age }) }})
+              }
+            </dd>
+          </div>
+        }
+        @if (view.deathday) {
+          <div>
+            <dt class="font-semibold text-gray-500">{{ i18n.t('person.died') }}</dt>
+            <dd>
+              {{ view.deathday }}
+              @if (view.age !== null) {
+                ({{ i18n.t('person.age', { age: view.age }) }})
+              }
+            </dd>
+          </div>
+        }
+        @if (view.person.place_of_birth) {
+          <div>
+            <dt class="font-semibold text-gray-500">{{ i18n.t('person.placeOfBirth') }}</dt>
+            <dd>{{ view.person.place_of_birth }}</dd>
+          </div>
+        }
+      </dl>
+
+      <div>
+        <h2 class="mb-2 text-xl font-bold">{{ i18n.t('person.biography') }}</h2>
+        @if (view.biography) {
+          <p
+            class="max-w-3xl leading-relaxed whitespace-pre-line text-gray-700 dark:text-gray-300"
+            [class.line-clamp-6]="view.isLongBiography && !showFullBiography()"
+          >
+            {{ view.biography }}
+          </p>
+          @if (view.isLongBiography) {
+            <button
+              type="button"
+              (click)="showFullBiography.set(!showFullBiography())"
+              class="mt-2 font-semibold text-brand-600 hover:underline dark:text-brand-400"
+            >
+              {{ i18n.t(showFullBiography() ? 'person.readLess' : 'person.readMore') }}
+            </button>
+          }
+        } @else {
+          <p class="text-gray-500">{{ i18n.t('person.noBiography') }}</p>
+        }
+      </div>
+    </div>
+  </section>
+
+  @if (view.filmography.length) {
+    <section>
+      <h2 class="mb-4 border-l-4 border-brand-600 pl-3 text-xl font-bold sm:text-2xl">
+        {{ i18n.t('person.knownFor') }}
+      </h2>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        @for (credit of view.filmography; track credit.media_type + '-' + credit.id) {
+          <app-movie-card [item]="credit" />
+        }
+      </div>
+    </section>
+  }
+} @else if (person.isLoading()) {
+  <div class="mb-10 flex animate-pulse flex-col gap-6 sm:flex-row sm:gap-8" aria-hidden="true">
+    <div class="aspect-2/3 w-40 shrink-0 rounded-xl bg-gray-200 sm:w-64 dark:bg-gray-800"></div>
+    <div class="flex flex-1 flex-col gap-3">
+      <div class="h-9 w-1/2 rounded bg-gray-200 dark:bg-gray-800"></div>
+      <div class="h-4 w-1/3 rounded bg-gray-200 dark:bg-gray-800"></div>
+      <div class="h-4 w-full max-w-3xl rounded bg-gray-200 dark:bg-gray-800"></div>
+      <div class="h-4 w-5/6 max-w-3xl rounded bg-gray-200 dark:bg-gray-800"></div>
+    </div>
+  </div>
+} @else if (person.error()) {
+  <div class="py-16 text-center text-gray-500">
+    <p class="mb-2">{{ i18n.t('person.loadError') }}</p>
+    <button
+      type="button"
+      (click)="person.reload()"
+      class="font-semibold text-brand-600 hover:underline"
+    >
+      {{ i18n.t('details.tryAgain') }}
+    </button>
+    <span class="mx-2">{{ i18n.t('details.or') }}</span>
+    <a routerLink="/" class="font-semibold text-brand-600 hover:underline">
+      {{ i18n.t('details.goHome') }}
+    </a>
+  </div>
+}

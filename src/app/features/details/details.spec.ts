@@ -120,6 +120,15 @@ describe('Details', () => {
     expect(text).toContain('Matthew McConaughey');
   });
 
+  it('should link each cast member to their page', async () => {
+    open('movie', '157336');
+    httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/157336`).flush(createDetails());
+    await fixture.whenStable();
+
+    const castLink = fixture.nativeElement.querySelector('a[href="/person/10297"]');
+    expect(castLink?.textContent).toContain('Matthew McConaughey');
+  });
+
   it('should embed the YouTube trailer', async () => {
     open('movie', '157336');
     httpTesting.expectOne((r) => r.url === `${apiUrl}/movie/157336`).flush(createDetails());

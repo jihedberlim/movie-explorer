@@ -28,6 +28,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/details/details').then((m) => m.Details),
   },
   {
+    path: 'person/:id',
+    title: 'title.person',
+    loadComponent: () => import('./features/person/person').then((m) => m.Person),
+  },
+  {
     path: 'watchlist',
     title: 'title.watchlist',
     loadComponent: () => import('./features/watchlist/watchlist').then((m) => m.Watchlist),

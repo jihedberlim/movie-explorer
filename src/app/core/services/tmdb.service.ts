@@ -10,6 +10,7 @@ import {
   MediaType,
   PagedResponse,
 } from '../models/media.model';
+import { PersonDetails } from '../models/person.model';
 import { LanguageService } from './language.service';
 
 @Injectable({ providedIn: 'root' })
@@ -45,6 +46,13 @@ export class TmdbService {
         // English trailer). TMDB wants just the language part here: "pt", not "pt-BR".
         include_video_language: `${this.language.current.slice(0, 2)},en`,
       },
+    });
+  }
+
+  // "translations" brings the biography in every language, for the English fallback
+  getPerson(id: number): Observable<PersonDetails> {
+    return this.http.get<PersonDetails>(`${this.apiUrl}/person/${id}`, {
+      params: { append_to_response: 'combined_credits,translations' },
     });
   }
 

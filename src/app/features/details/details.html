@@ -83,20 +83,24 @@
       <h2 class="mb-3 text-xl font-bold">{{ i18n.t('details.cast') }}</h2>
       <div class="flex gap-4 overflow-x-auto pb-2">
         @for (person of view.cast; track person.id) {
-          <div class="w-24 shrink-0">
+          <a [routerLink]="['/person', person.id]" class="group w-24 shrink-0">
             <div class="aspect-2/3 overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-800">
               @if (tmdb.getImageUrl(person.profile_path, 'w185'); as photoUrl) {
                 <img
                   [src]="photoUrl"
                   [alt]="person.name"
                   loading="lazy"
-                  class="h-full w-full object-cover text-transparent"
+                  class="h-full w-full object-cover text-transparent transition-transform duration-300 group-hover:scale-105"
                 />
               }
             </div>
-            <p class="mt-1 text-sm font-semibold">{{ person.name }}</p>
+            <p
+              class="mt-1 text-sm font-semibold transition-colors group-hover:text-brand-600 dark:group-hover:text-brand-400"
+            >
+              {{ person.name }}
+            </p>
             <p class="text-xs text-gray-500">{{ person.character }}</p>
-          </div>
+          </a>
         }
       </div>
     </section>
