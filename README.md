@@ -12,6 +12,7 @@ A movie and TV show explorer built with Angular, signals and the TMDB API.
 <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
 <img src="https://img.shields.io/badge/RxJS-7-B7178C?logo=reactivex&logoColor=white" alt="RxJS 7" />
 <img src="https://img.shields.io/badge/Vitest-151_tests-6E9F18?logo=vitest&logoColor=white" alt="Vitest, 151 tests" />
+<img src="https://img.shields.io/badge/Playwright-9_E2E_tests-2EAD33?logo=playwright&logoColor=white" alt="Playwright, 9 E2E tests" />
 <img src="https://img.shields.io/badge/API-TMDB-01B4E4?logo=themoviedatabase&logoColor=white" alt="TMDB API" />
 
 <a href="#portugues"><img src="public/flags/br.svg" alt="" width="20" /> <b>Português</b></a>
@@ -50,15 +51,15 @@ Busque filmes e séries, filtre por gênero e ano, veja os detalhes com trailer 
 
 ### Tecnologias
 
-| Item         | Tecnologia                                                                       |
-| :----------- | :------------------------------------------------------------------------------- |
-| Framework    | Angular 22: standalone components, signals, `rxResource`, rotas com lazy loading |
-| Linguagem    | TypeScript (strict mode)                                                         |
-| Estilo       | Tailwind CSS 4 com uma cor `brand` própria e dark mode por classe                |
-| HTTP / async | `HttpClient`, RxJS, interceptors funcionais                                      |
-| Dados        | [API do TMDB](https://www.themoviedb.org/documentation/api)                      |
-| Testes       | Vitest + `TestBed` do Angular + `HttpTestingController`                          |
-| Formatação   | Prettier                                                                         |
+| Item         | Tecnologia                                                                            |
+| :----------- | :------------------------------------------------------------------------------------ |
+| Framework    | Angular 22: standalone components, signals, `rxResource`, rotas com lazy loading      |
+| Linguagem    | TypeScript (strict mode)                                                              |
+| Estilo       | Tailwind CSS 4 com uma cor `brand` própria e dark mode por classe                     |
+| HTTP / async | `HttpClient`, RxJS, interceptors funcionais                                           |
+| Dados        | [API do TMDB](https://www.themoviedb.org/documentation/api)                           |
+| Testes       | Vitest + `TestBed` do Angular + `HttpTestingController` (unitários), Playwright (E2E) |
+| Formatação   | Prettier                                                                              |
 
 ### Funcionalidades
 
@@ -99,6 +100,13 @@ npm test
 
 São 151 testes unitários com Vitest. Eles cobrem as regras de negócio (nível da nota, filtros da URL, filmografia, idade, escolha do idioma), os services (URLs e parâmetros do TMDB, lista, tema, idioma), os interceptors e os principais componentes. As chamadas HTTP são simuladas com `HttpTestingController`, então os testes nunca chamam o TMDB de verdade.
 
+```bash
+npx playwright install chromium
+npm run e2e
+```
+
+São 9 testes E2E com Playwright: um navegador de verdade abre o app e faz o que um usuário faria. Eles buscam "Interstellar" e abrem os detalhes, salvam na lista e conferem que ela continua lá depois de recarregar, aplicam um filtro de gênero e conferem a URL, abrem uma rota que não existe, ligam o dark mode e trocam o idioma. A API do TMDB é simulada com `page.route`, então os testes rodam sem internet e sempre com os mesmos dados. O primeiro comando só é necessário uma vez, para baixar o Chromium do Playwright.
+
 ### Estrutura do projeto
 
 ```
@@ -120,7 +128,7 @@ src/app/
 
 ### Próximos passos
 
-- [ ] Testes E2E com Playwright (com a API do TMDB mockada)
+- [x] Testes E2E com Playwright (com a API do TMDB mockada)
 - [ ] Dockerfile (Node faz o build, nginx serve) para rodar com `docker compose up --build`
 - [ ] GitHub Actions rodando os testes a cada push
 - [ ] Deploy na Vercel
@@ -153,15 +161,15 @@ Search movies and TV shows, filter them by genre and year, see details with the 
 
 ### Tech Stack
 
-| Item         | Technology                                                                   |
-| :----------- | :--------------------------------------------------------------------------- |
-| Framework    | Angular 22: standalone components, signals, `rxResource`, lazy-loaded routes |
-| Language     | TypeScript (strict mode)                                                     |
-| Styling      | Tailwind CSS 4 with a custom `brand` color and class-based dark mode         |
-| HTTP / async | `HttpClient`, RxJS, functional interceptors                                  |
-| Data         | [TMDB API](https://www.themoviedb.org/documentation/api)                     |
-| Tests        | Vitest + Angular `TestBed` + `HttpTestingController`                         |
-| Formatting   | Prettier                                                                     |
+| Item         | Technology                                                                    |
+| :----------- | :---------------------------------------------------------------------------- |
+| Framework    | Angular 22: standalone components, signals, `rxResource`, lazy-loaded routes  |
+| Language     | TypeScript (strict mode)                                                      |
+| Styling      | Tailwind CSS 4 with a custom `brand` color and class-based dark mode          |
+| HTTP / async | `HttpClient`, RxJS, functional interceptors                                   |
+| Data         | [TMDB API](https://www.themoviedb.org/documentation/api)                      |
+| Tests        | Vitest + Angular `TestBed` + `HttpTestingController` (unit), Playwright (E2E) |
+| Formatting   | Prettier                                                                      |
 
 ### Features
 
@@ -202,6 +210,13 @@ npm test
 
 151 unit tests with Vitest. They cover the business rules (rating level, URL filters, filmography, age, language choice), the services (TMDB URLs and params, watchlist, theme, language), the interceptors and the main components. HTTP calls are faked with `HttpTestingController`, so the tests never call the real TMDB.
 
+```bash
+npx playwright install chromium
+npm run e2e
+```
+
+9 E2E tests with Playwright: a real browser opens the app and does what a user would do. They search for "Interstellar" and open its details, save it to the watchlist and check it is still there after a reload, apply a genre filter and check the URL, open a route that doesn't exist, turn on dark mode and switch the language. The TMDB API is mocked with `page.route`, so the tests run offline and always with the same data. The first command is needed only once, to download Playwright's Chromium.
+
 ### Project Structure
 
 ```
@@ -223,7 +238,7 @@ src/app/
 
 ### Next Steps
 
-- [ ] E2E tests with Playwright (with the TMDB API mocked)
+- [x] E2E tests with Playwright (with the TMDB API mocked)
 - [ ] Dockerfile (Node builds, nginx serves) to run with `docker compose up --build`
 - [ ] GitHub Actions running the tests on every push
 - [ ] Deploy on Vercel
