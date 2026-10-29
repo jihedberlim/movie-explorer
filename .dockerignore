@@ -1,0 +1,14 @@
+node_modules
+dist
+.angular
+.git
+.github
+.vscode
+.claude
+docs
+e2e
+test-results
+playwright-report
+.env
+# The image gets the token from the TMDB_TOKEN build arg, never from your local file
+src/environments/environment.ts

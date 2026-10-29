@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Read from a .env file next to this one (TMDB_TOKEN=...), which is in .gitignore
+        TMDB_TOKEN: ${TMDB_TOKEN}
+    ports:
+      - '8080:80'

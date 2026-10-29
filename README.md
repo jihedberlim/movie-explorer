@@ -7,6 +7,7 @@
 Um explorador de filmes e séries feito com Angular, signals e a API do TMDB.<br />
 A movie and TV show explorer built with Angular, signals and the TMDB API.
 
+<a href="https://github.com/jihedberlim/movie-explorer/actions/workflows/ci.yml"><img src="https://github.com/jihedberlim/movie-explorer/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 <img src="https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white" alt="Angular 22" />
 <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript strict" />
 <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
@@ -14,6 +15,7 @@ A movie and TV show explorer built with Angular, signals and the TMDB API.
 <img src="https://img.shields.io/badge/Vitest-151_tests-6E9F18?logo=vitest&logoColor=white" alt="Vitest, 151 tests" />
 <img src="https://img.shields.io/badge/Playwright-9_E2E_tests-2EAD33?logo=playwright&logoColor=white" alt="Playwright, 9 E2E tests" />
 <img src="https://img.shields.io/badge/API-TMDB-01B4E4?logo=themoviedatabase&logoColor=white" alt="TMDB API" />
+<img src="https://img.shields.io/badge/Docker-nginx-2496ED?logo=docker&logoColor=white" alt="Docker with nginx" />
 
 <a href="#portugues"><img src="public/flags/br.svg" alt="" width="20" /> <b>Português</b></a>
 &nbsp;·&nbsp;
@@ -32,6 +34,10 @@ A movie and TV show explorer built with Angular, signals and the TMDB API.
 ## <img src="public/flags/br.svg" alt="" width="24" /> Português
 
 Busque filmes e séries, filtre por gênero e ano, veja os detalhes com trailer e elenco, explore a filmografia de um ator e monte a sua própria lista para assistir. Não tem back-end próprio: o app conversa direto com a [API do TMDB](https://www.themoviedb.org/documentation/api) e guarda a lista no navegador (`localStorage`).
+
+### Demonstração
+
+<img src="docs/demo.gif" alt="Demonstração: Home, busca por Interstellar, detalhes, salvar na lista, página do ator e modo claro" />
 
 ### Screenshots
 
@@ -60,6 +66,7 @@ Busque filmes e séries, filtre por gênero e ano, veja os detalhes com trailer 
 | Dados        | [API do TMDB](https://www.themoviedb.org/documentation/api)                           |
 | Testes       | Vitest + `TestBed` do Angular + `HttpTestingController` (unitários), Playwright (E2E) |
 | Formatação   | Prettier                                                                              |
+| Infra        | Docker (Node faz o build, nginx serve), GitHub Actions, Vercel                        |
 
 ### Funcionalidades
 
@@ -76,7 +83,25 @@ Busque filmes e séries, filtre por gênero e ano, veja os detalhes com trailer 
 
 ### Como rodar
 
-Você precisa do **Node.js 22.22+ ou 24.15+** e de um **API Read Access Token** gratuito do TMDB ([crie uma conta](https://www.themoviedb.org/signup) e vá em _Settings → API_).
+Você precisa de um **API Read Access Token** gratuito do TMDB ([crie uma conta](https://www.themoviedb.org/signup) e vá em _Settings → API_).
+
+**Com Docker** (só precisa do Docker instalado):
+
+```bash
+git clone https://github.com/jihedberlim/movie-explorer.git
+cd movie-explorer
+cp .env.example .env
+```
+
+Cole o seu token no arquivo `.env` e rode:
+
+```bash
+docker compose up --build
+```
+
+Abra http://localhost:8080. O Docker faz o build com Node e serve o resultado com nginx.
+
+**Com Node** (para desenvolver), você precisa do **Node.js 22.22+ ou 24.15+** e do mesmo token.
 
 ```bash
 git clone https://github.com/jihedberlim/movie-explorer.git
@@ -129,8 +154,8 @@ src/app/
 ### Próximos passos
 
 - [x] Testes E2E com Playwright (com a API do TMDB mockada)
-- [ ] Dockerfile (Node faz o build, nginx serve) para rodar com `docker compose up --build`
-- [ ] GitHub Actions rodando os testes a cada push
+- [x] Dockerfile (Node faz o build, nginx serve) para rodar com `docker compose up --build`
+- [x] GitHub Actions rodando os testes unitários, os E2E e o build do Docker a cada push
 - [ ] Deploy na Vercel
 
 <p align="right"><a href="#movie-explorer">Voltar ao topo ↑</a></p>
@@ -142,6 +167,10 @@ src/app/
 ## <img src="public/flags/us.svg" alt="" width="24" /> English
 
 Search movies and TV shows, filter them by genre and year, see details with the trailer and the cast, browse an actor's filmography and build your own watchlist. There is no back-end of its own: the app talks straight to the [TMDB API](https://www.themoviedb.org/documentation/api) and keeps the watchlist in the browser (`localStorage`).
+
+### Demo
+
+<img src="docs/demo.gif" alt="Demo: Home, searching for Interstellar, details, saving to the watchlist, actor page and light mode" />
 
 ### Screenshots
 
@@ -170,6 +199,7 @@ Search movies and TV shows, filter them by genre and year, see details with the 
 | Data         | [TMDB API](https://www.themoviedb.org/documentation/api)                      |
 | Tests        | Vitest + Angular `TestBed` + `HttpTestingController` (unit), Playwright (E2E) |
 | Formatting   | Prettier                                                                      |
+| Infra        | Docker (Node builds, nginx serves), GitHub Actions, Vercel                    |
 
 ### Features
 
@@ -186,7 +216,25 @@ Search movies and TV shows, filter them by genre and year, see details with the 
 
 ### Getting Started
 
-You need **Node.js 22.22+ or 24.15+** and a free **TMDB API Read Access Token** ([create an account](https://www.themoviedb.org/signup), then go to _Settings → API_).
+You need a free **TMDB API Read Access Token** ([create an account](https://www.themoviedb.org/signup), then go to _Settings → API_).
+
+**With Docker** (only Docker needed):
+
+```bash
+git clone https://github.com/jihedberlim/movie-explorer.git
+cd movie-explorer
+cp .env.example .env
+```
+
+Paste your token into `.env` and run:
+
+```bash
+docker compose up --build
+```
+
+Open http://localhost:8080. Docker builds the app with Node and serves it with nginx.
+
+**With Node** (for development), you need **Node.js 22.22+ or 24.15+** and the same token.
 
 ```bash
 git clone https://github.com/jihedberlim/movie-explorer.git
@@ -239,8 +287,8 @@ src/app/
 ### Next Steps
 
 - [x] E2E tests with Playwright (with the TMDB API mocked)
-- [ ] Dockerfile (Node builds, nginx serves) to run with `docker compose up --build`
-- [ ] GitHub Actions running the tests on every push
+- [x] Dockerfile (Node builds, nginx serves) to run with `docker compose up --build`
+- [x] GitHub Actions running the unit tests, the E2E tests and the Docker build on every push
 - [ ] Deploy on Vercel
 
 <p align="right"><a href="#movie-explorer">Back to top ↑</a></p>
